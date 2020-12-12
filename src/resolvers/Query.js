@@ -1,11 +1,17 @@
 import getUserId from '../utils/getUserId';
 
+const getArgs = args => ({
+    first: args.first,
+    skip: args.skip,
+    after: args.after,
+    orderBy: args.orderBy,
+});
+
 const Query = {
     users(parent, args, { prisma }, info) {
+        const otherArgs = getArgs(args);
         const opArgs = {
-            first: args.first,
-            skip: args.skip,
-            after: args.after,
+            ...otherArgs,
         };
 
         if (args.query) {
@@ -20,13 +26,12 @@ const Query = {
         return prisma.query.users(opArgs, info);
     },
     posts(parent, args, { prisma }, info) {
+        const otherArgs = getArgs(args);
         const opArgs = {
             where: {
                 published: true,
             },
-            first: args.first,
-            skip: args.skip,
-            after: args.after,
+            ...otherArgs,
         };
         if (args.query) {
             opArgs.where.OR = [
@@ -42,14 +47,13 @@ const Query = {
         const userExists = await prisma.exists.User({ id: userId });
 
         if (!userExists) throw new Error('Encountered problem fetching this user\'s posts');
+        const otherArgs = getArgs(args);
 
         const opArgs = {
             where: {
                 author: { id: userId },
             },
-            first: args.first,
-            skip: args.skip,
-            after: args.after,
+            ...otherArgs,
         };
 
         if (args.query) {
@@ -62,10 +66,9 @@ const Query = {
         return prisma.query.posts(opArgs, info);
     },
     comments(parent, args, { prisma }, info) {
+        const otherArgs = getArgs(args);
         const opArgs = {
-            first: args.first,
-            skip: args.skip,
-            after: args.after,
+            ...otherArgs,
         };
         return prisma.query.comments(opArgs, info);
     },
