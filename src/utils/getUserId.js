@@ -6,7 +6,7 @@ const getUserId = (request, requireAuth = true) => {
     if (header) {
         // get token without the Bearer string
         const token = header.replace('Bearer ', '');
-        const decoded = jwt.verify(token, "48Lyw%<x'EbQ+<SR");
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         return decoded.userId;
     }
