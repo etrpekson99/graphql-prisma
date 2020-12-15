@@ -30,7 +30,7 @@ test('Should create a new user', async () => {
 test('Should expose public author profiles', async () => {
     const res = await client.query({ query: getUsers });
 
-    expect(res.data.users.length).toBe(1);
+    expect(res.data.users.length).toBe(2);
     expect(res.data.users[0].email).toBe(null);
     expect(res.data.users[0].name).toBe('Jen');
 });
